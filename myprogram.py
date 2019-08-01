@@ -56,9 +56,10 @@ def get_recommendations(critics, person, names_movies):
         for y in names_people:
             if x in critics[y]:
                 su += comparision_dict[y][x]
-                ++cnt
-        if(cnt!=0): actual_rating[x] = su/cnt
-    return comparision_dict
+                cnt = cnt+ pearson_distance(critics, person,y)
+        actual_rating[x] = su/cnt
+    actual_rating = sorted(actual_rating.iteritems(), key = lambda x : x[1])
+    return actual_rating
     
 names_movies = []        
 for x in critics:
