@@ -36,14 +36,52 @@ def top_matches(critics, person):
     scores.sort()
     scores.reverse()
     return scores
+
+def get_recommendations(critics, person, names_movies):
+    names_people = critics.keys()
+    names_people.remove(person)
     
-names_critics = critics.keys()
-names_movies = critics[critics.keys()[0]].keys()
+    comparision_dict = {}
+    for x in critics:
+        tmp = {}
+        sim = pearson_distance(critics, person, x)
+        for y in critics[x]:
+            tmp[y] = sim * critics[x][y]
+        comparision_dict[x] = tmp
+
+    actual_rating = {}
+    for x in names_movies:
+        su = 0
+        cnt=0
+        for y in names_people:
+            if x in critics[y]:
+                su += comparision_dict[y][x]
+                ++cnt
+        if(cnt!=0): actual_rating[x] = su/cnt
+    return comparision_dict
+    
+names_movies = []        
+for x in critics:
+    m_name = critics[x].keys()
+    names_movies = list(set(critics[x]) | set(names_movies))
+
+#print(names_movies)
+    
+#names_critics = critics.keys()
+#names_movies = critics[critics.keys()[0]].keys()
 
 #print(critics.keys())
 #print(critics[critics.keys()[0]].keys())
 
-print(sim_distance(critics, 'Lisa Rose', 'Gene Seymour'))
-print(pearson_distance(critics, 'Lisa Rose', 'Gene Seymour'))
-print(top_matches(critics, 'Toby'))
+#print(sim_distance(critics, 'Lisa Rose', 'Gene Seymour'))
+#print(pearson_distance(critics, 'Lisa Rose', 'Gene Seymour'))
+#print(top_matches(critics, 'Toby'))
+print(get_recommendations(critics, 'Toby', names_movies))
+
+
+
+
+
+
+
 
