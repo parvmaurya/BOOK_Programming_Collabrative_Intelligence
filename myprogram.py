@@ -30,6 +30,12 @@ def pearson_distance(critics, person1, person2):
     if den==0: return 0
     r = num/den
     return r
+
+def top_matches(critics, person):
+    scores = [(pearson_distance(critics,person,x),x) for x in critics.keys() if x!=person]
+    scores.sort()
+    scores.reverse()
+    return scores
     
 names_critics = critics.keys()
 names_movies = critics[critics.keys()[0]].keys()
@@ -39,4 +45,5 @@ names_movies = critics[critics.keys()[0]].keys()
 
 print(sim_distance(critics, 'Lisa Rose', 'Gene Seymour'))
 print(pearson_distance(critics, 'Lisa Rose', 'Gene Seymour'))
+print(top_matches(critics, 'Toby'))
 
